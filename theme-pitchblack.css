@@ -933,6 +933,6 @@ img[src$="/img/matrix.svg"] {
 }
 
 .CodeMirror, .CodeMirror-selected, ::selection {
-    background: var(--color-secondary)!important;
-    color: var(--color-primary)!important;
+    background: var(--color-primary)!important;
+    color: var(--color-secondary)!important;
 }
