@@ -963,3 +963,7 @@ img[src$="/img/matrix.svg"] {
     background: var(--color-body);
     background-color: var(--color-body)
 }
+
+.mtk1 {
+    color: #6D7178!important
+}
