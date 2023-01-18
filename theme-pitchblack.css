@@ -964,6 +964,6 @@ img[src$="/img/matrix.svg"] {
     background-color: var(--color-body)
 }
 
-.mtk1 {
+.mtk1, .mtk10 {
     color: #6D7178!important
 }
