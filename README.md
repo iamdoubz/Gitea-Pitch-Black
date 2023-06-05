@@ -1,6 +1,7 @@
 # Gitea-Pitch-Black
 
-Pitch black theme for Gitea versions 1.14 through 1.16
+Pitch black theme for Gitea versions 1.14 through 1.18
+From version 1.19, [gitea removed](https://github.com/go-gitea/gitea/pull/23508) the `less` files for `css` files
 
 ## Use cases
 
