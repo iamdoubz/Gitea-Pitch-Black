@@ -11,6 +11,6 @@ From version 1.19, [gitea removed](https://github.com/go-gitea/gitea/pull/23508)
 
 ## Photos
 
-[![pitchblack01.png](https://pix.dou.bet/images/2021/06/28/pitchblack01.png)](https://pix.dou.bet/image/gUOb)
-[![pitchblack02.png](https://pix.dou.bet/images/2021/06/28/pitchblack02.png)](https://pix.dou.bet/image/gFN8)
-[![pitchblack03.png](https://pix.dou.bet/images/2021/06/28/pitchblack03.png)](https://pix.dou.bet/image/gAoV)
+[![pitchblack01.md.png](https://pix.dou.bet/images/2021/06/28/pitchblack01.md.png)](https://pix.dou.bet/image/gUOb)
+[![pitchblack02.md.png](https://pix.dou.bet/images/2021/06/28/pitchblack02.md.png)](https://pix.dou.bet/image/gFN8)
+[![pitchblack03.md.png](https://pix.dou.bet/images/2021/06/28/pitchblack03.md.png)](https://pix.dou.bet/image/gAoV)
