@@ -11,6 +11,6 @@ From version 1.19, [gitea removed](https://github.com/go-gitea/gitea/pull/23508)
 
 ## Photos
 
-[![pitchblack01.md.png](https://pix.dou.bet/images/2021/06/28/pitchblack01.md.png)](https://pix.dou.bet/image/gUOb)
-[![pitchblack02.md.png](https://pix.dou.bet/images/2021/06/28/pitchblack02.md.png)](https://pix.dou.bet/image/gFN8)
-[![pitchblack03.md.png](https://pix.dou.bet/images/2021/06/28/pitchblack03.md.png)](https://pix.dou.bet/image/gAoV)
+[![gitea dashboard with code contributions](https://github.com/iamdoubz/Gitea-Pitch-Black/assets/4871781/b97eab0f-f948-4526-9fee-1340599ce97e)](https://pix.dou.bet/image/gUOb)
+[![gitea main profile page](https://github.com/iamdoubz/Gitea-Pitch-Black/assets/4871781/a3bf4086-6a04-41f0-be69-ca535d8b4249)](https://pix.dou.bet/image/gFN8)
+[![gitea single repo page](https://github.com/iamdoubz/Gitea-Pitch-Black/assets/4871781/19656fb0-1408-4e57-9245-24d2f61ea958)](https://pix.dou.bet/image/gAoV)
