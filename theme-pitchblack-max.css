@@ -1,0 +1,671 @@
+/* ==========================================================================
+   Gitea Pitch Black theme  (human-readable build: theme-pitchblack-max.css)
+   https://github.com/iamdoubz/Gitea-Pitch-Black
+   --------------------------------------------------------------------------
+   Base:     Gitea "Dark" theme (web_src/css/themes/theme-gitea-dark.css)
+             taken from the v28.1.0 tag of go-gitea/gitea.
+   Targets:  Gitea v28.x  (also works on v1.27.x - see the compat notes below)
+   Goal:     As black as possible without hurting readability or making any
+             control hard to find. Surfaces go to true black (#000000);
+             structure is carried by neutral grey borders and subtle
+             hover/active overlays instead of grey panels. Text keeps
+             high contrast, and status colors (diffs, errors, labels,
+             syntax highlighting) keep their hues so meaning is never lost.
+
+   How Gitea themes work (v1.22+ and still true in v28):
+     * Every color in Gitea's UI is a CSS custom property (--color-*).
+       A theme is just a :root block that sets all of them. Gitea's own
+       stylesheets never hard-code colors, so nothing else needs overriding.
+     * The `gitea-theme-meta-info` block is read by the Gitea server (not by
+       the browser) to get the theme's display name and color scheme.
+     * Since v1.26 Gitea's built-in theme files are bundled with hashed file
+       names, so a custom theme can no longer @import "theme-gitea-dark.css".
+       That is why the old Pitch Black theme broke. This file is fully
+       self-contained and imports nothing.
+
+   Install:
+     1. Copy ONE of theme-pitchblack.css (minified) or this file to
+        $GITEA_CUSTOM/public/assets/css/
+        (If you copy both, Gitea will list two themes, "pitchblack" and
+        "pitchblack-max", with the same display name.)
+     2. If app.ini sets [ui] THEMES, add the name to it, e.g.
+          [ui]
+          THEMES = gitea-auto, gitea-light, gitea-dark, pitchblack
+        To make it the default:  DEFAULT_THEME = pitchblack
+        (Leave THEMES unset and Gitea lists every theme it finds.)
+     3. Restart Gitea, then pick "Pitch Black" under
+        Settings > Appearance.
+
+   Color scale used for neutrals (all pure greys, no blue tint like the
+   stock Dark theme):
+     #000000  page, boxes, nav, code         (the "pitch black")
+     #0a0a0a  box headers, inputs, menus, buttons - one step off black
+     #141414  hover-opaque, raised surfaces
+     #1f1f1f  nav hover, tooltip-ish surfaces
+     #2e2e2e  default border color (--color-secondary)
+     #8c8c8c+ the dimmest text allowed (>= 6:1 contrast on black)
+   ========================================================================== */
+
+
+/* --------------------------------------------------------------------------
+   Theme meta info
+   Read by the Gitea server to name the theme in Settings > Appearance.
+   --theme-color-scheme tells Gitea this is a dark theme (used for things
+   like the Monaco editor theme and rendered external content).
+   -------------------------------------------------------------------------- */
+gitea-theme-meta-info {
+  --theme-display-name: "Pitch Black";
+  --theme-color-scheme: "dark";
+}
+
+
+:root {
+  /* Flag read by Gitea's JavaScript (isDarkTheme()) to pick dark variants
+     of charts, Mermaid diagrams, the code editor, etc. Must stay true. */
+  --is-dark-theme: true;
+
+  /* ------------------------------------------------------------------------
+     Primary (accent) color
+     Links, primary buttons, active tabs, focus rings, selections.
+     Kept identical to stock Dark: #4183c4 is ~5:1 against black, which is
+     readable for link text. "dark-N" steps get LIGHTER (used for text on
+     dark), "light-N" steps get DARKER (used for tinted backgrounds).
+     ------------------------------------------------------------------------ */
+  --color-primary: #4183c4;
+  --color-primary-contrast: #ffffff;         /* text on primary buttons */
+  --color-primary-dark-1: #548fca;
+  --color-primary-dark-2: #679cd0;
+  --color-primary-dark-3: #7aa8d6;
+  --color-primary-dark-4: #8db5dc;
+  --color-primary-dark-5: #b3cde7;
+  --color-primary-dark-6: #d9e6f3;
+  --color-primary-dark-7: #f4f8fb;
+  --color-primary-light-1: #3876b3;
+  --color-primary-light-2: #31699f;
+  --color-primary-light-3: #2b5c8b;
+  --color-primary-light-4: #254f77;
+  --color-primary-light-5: #193450;
+  --color-primary-light-6: #0c1a28;
+  --color-primary-light-7: #04080c;
+  /* translucent primary - selected rows, editor selection, focus glows */
+  --color-primary-alpha-10: #4183c419;
+  --color-primary-alpha-20: #4183c433;
+  --color-primary-alpha-30: #4183c44b;
+  --color-primary-alpha-40: #4183c466;
+  --color-primary-alpha-50: #4183c480;
+  --color-primary-alpha-60: #4183c499;
+  --color-primary-alpha-70: #4183c4b3;
+  --color-primary-alpha-80: #4183c4cc;
+  --color-primary-alpha-90: #4183c4e1;
+  --color-primary-hover: var(--color-primary-light-1);
+  --color-primary-active: var(--color-primary-light-2);
+
+  /* ------------------------------------------------------------------------
+     Secondary (neutral) scale
+     --color-secondary is Gitea's DEFAULT BORDER COLOR (segments, boxes,
+     tables, menus, inputs). On a black page the borders are what show the
+     layout, so this is deliberately visible (#2e2e2e) rather than near-black.
+     "dark-N" steps get lighter, "light-N" steps get darker.
+     Stock Dark uses blue-grey (#3f4248); these are neutral greys.
+     ------------------------------------------------------------------------ */
+  --color-secondary: #2e2e2e;
+  --color-secondary-dark-1: #363636;
+  --color-secondary-dark-2: #404040;
+  --color-secondary-dark-3: #4f4f4f;
+  --color-secondary-dark-4: #616161;
+  --color-secondary-dark-5: #707070;
+  --color-secondary-dark-6: #808080;
+  --color-secondary-dark-7: #8f8f8f;
+  --color-secondary-dark-8: #a1a1a1;
+  --color-secondary-dark-9: #a9a9a9;
+  --color-secondary-dark-10: #b8b8b8;
+  --color-secondary-dark-11: #c6c6c6;
+  --color-secondary-dark-12: #d0d0d0;
+  --color-secondary-dark-13: #d4d4d4;
+  --color-secondary-light-1: #242424;
+  --color-secondary-light-2: #1a1a1a;
+  --color-secondary-light-3: #111111;
+  --color-secondary-light-4: #0a0a0a;
+  --color-secondary-alpha-10: #2e2e2e19;
+  --color-secondary-alpha-20: #2e2e2e33;
+  --color-secondary-alpha-30: #2e2e2e4b;
+  --color-secondary-alpha-40: #2e2e2e66;
+  --color-secondary-alpha-50: #2e2e2e80;
+  --color-secondary-alpha-60: #2e2e2e99;
+  --color-secondary-alpha-70: #2e2e2eb3;
+  --color-secondary-alpha-80: #2e2e2ecc;
+  --color-secondary-alpha-90: #2e2e2ee1;
+  /* "secondary" (grey) buttons */
+  --color-secondary-button: var(--color-secondary-dark-4);
+  --color-secondary-hover: var(--color-secondary-dark-3);
+  --color-secondary-active: var(--color-secondary-dark-2);
+
+  /* ------------------------------------------------------------------------
+     Console colors
+     Gitea Actions job logs and console/terminal file previews.
+     Background goes fully black; hover/active rows use faint greys.
+     ------------------------------------------------------------------------ */
+  --color-console-fg: #f8f8f8;
+  --color-console-fg-subtle: #c6c6c6;
+  --color-console-bg: #000000;
+  --color-console-hover-bg: #141414;
+  --color-console-active-bg: #1f1f1f;
+  --color-console-link: #a1a1a1;
+  /* v1.27 compatibility: these three were removed in v28 but are still read
+     by v1.27's Actions log view. Harmless (unused) on v28. */
+  --color-console-border: #242424;
+  --color-console-menu-bg: #141414;
+  --color-console-menu-border: #363636;
+
+  /* ------------------------------------------------------------------------
+     Named colors
+     Used for colored buttons, labels, milestones, badges, charts.
+     Hues kept from stock Dark so labels and states mean the same thing.
+     Only "black" is pulled darker/neutral.
+     ------------------------------------------------------------------------ */
+  --color-red: #cc4848;
+  --color-orange: #cc580c;
+  --color-yellow: #cc9903;
+  --color-olive: #91a313;
+  --color-green: #87ab63;
+  --color-teal: #00918a;
+  --color-blue: #3a8ac6;
+  --color-violet: #906ae1;
+  --color-purple: #b259d0;
+  --color-pink: #d22e8b;
+  --color-brown: #a47252;
+  --color-black: #1a1a1a;
+  /* light variants (+10% lightness) - hover states, text on dark tints */
+  --color-red-light: #d15a5a;
+  --color-orange-light: #f6a066;
+  --color-yellow-light: #eaaf03;
+  --color-olive-light: #abc016;
+  --color-green-light: #93b373;
+  --color-teal-light: #00b6ad;
+  --color-blue-light: #4e96cc;
+  --color-violet-light: #9b79e4;
+  --color-purple-light: #ba6ad5;
+  --color-pink-light: #d74397;
+  --color-brown-light: #b08061;
+  --color-black-light: #404040;
+  /* dark-1 variants (-10% lightness) - hover on colored buttons */
+  --color-red-dark-1: #c23636;
+  --color-orange-dark-1: #f38236;
+  --color-yellow-dark-1: #b88a03;
+  --color-olive-dark-1: #839311;
+  --color-green-dark-1: #7a9e55;
+  --color-teal-dark-1: #00837c;
+  --color-blue-dark-1: #347cb3;
+  --color-violet-dark-1: #7b4edb;
+  --color-purple-dark-1: #a742c9;
+  --color-pink-dark-1: #be297d;
+  --color-brown-dark-1: #94674a;
+  --color-black-dark-1: #111111;
+  /* dark-2 variants (-20% lightness) - active/pressed colored buttons */
+  --color-red-dark-2: #ad3030;
+  --color-orange-dark-2: #f16e17;
+  --color-yellow-dark-2: #a37a02;
+  --color-olive-dark-2: #74820f;
+  --color-green-dark-2: #6c8c4c;
+  --color-teal-dark-2: #00746e;
+  --color-blue-dark-2: #2e6e9f;
+  --color-violet-dark-2: #6733d6;
+  --color-purple-dark-2: #9834b9;
+  --color-pink-dark-2: #a9246f;
+  --color-brown-dark-2: #835b42;
+  --color-black-dark-2: #0a0a0a;
+
+  /* ------------------------------------------------------------------------
+     ANSI colors
+     Actions logs and console file rendering (\e[31m etc.). "black" maps to
+     a dark grey rather than #000 so black-on-black log text stays visible.
+     ------------------------------------------------------------------------ */
+  --color-ansi-black: #2e2e2e;
+  --color-ansi-red: #cc4848;
+  --color-ansi-green: #87ab63;
+  --color-ansi-yellow: #cc9903;
+  --color-ansi-blue: #3a8ac6;
+  --color-ansi-magenta: #d22e8b;
+  --color-ansi-cyan: #00918a;
+  --color-ansi-white: var(--color-console-fg-subtle);
+  --color-ansi-bright-black: #6b6b6b;
+  --color-ansi-bright-red: #d15a5a;
+  --color-ansi-bright-green: #93b373;
+  --color-ansi-bright-yellow: #eaaf03;
+  --color-ansi-bright-blue: #4e96cc;
+  --color-ansi-bright-magenta: #d74397;
+  --color-ansi-bright-cyan: #00b6ad;
+  --color-ansi-bright-white: var(--color-console-fg);
+
+  /* ------------------------------------------------------------------------
+     16-color series
+     Repo language bar, activity/contributor charts. Unchanged from Dark.
+     ------------------------------------------------------------------------ */
+  --color-series-16-0: #7db233;
+  --color-series-16-1: #499a37;
+  --color-series-16-2: #ce4751;
+  --color-series-16-3: #8f9121;
+  --color-series-16-4: #ac32a6;
+  --color-series-16-5: #7445e9;
+  --color-series-16-6: #c67d28;
+  --color-series-16-7: #4db392;
+  --color-series-16-8: #aa4d30;
+  --color-series-16-9: #2a6f84;
+  --color-series-16-10: #c45327;
+  --color-series-16-11: #3d965c;
+  --color-series-16-12: #792a93;
+  --color-series-16-13: #439d73;
+  --color-series-16-14: #103aad;
+  --color-series-16-15: #982e85;
+
+  /* ------------------------------------------------------------------------
+     Other named colors
+     ------------------------------------------------------------------------ */
+  --color-grey: #363636;                     /* grey buttons/labels */
+  --color-grey-light: #8c8c8c;
+  --color-gold: #b1983b;                     /* stars, sponsor, etc. */
+  --color-white: #ffffff;
+
+  /* ------------------------------------------------------------------------
+     Diff colors
+     Commit/PR diffs and the split/unified diff viewer. Row backgrounds are
+     darkened toward black but keep enough tint to read added vs removed at
+     a glance; word-level highlights stay clearly brighter than their row.
+     ------------------------------------------------------------------------ */
+  --color-diff-added-fg: #93b373;
+  --color-diff-added-linenum-bg: #1b3520;
+  --color-diff-added-row-bg: #0f2214;
+  --color-diff-added-row-border: #2a4430;
+  --color-diff-added-word-bg: #2f5a30;
+  --color-diff-moved-row-bg: #4a4a26;
+  --color-diff-moved-row-border: #8f9a4f;
+  --color-diff-removed-fg: #fb5f5b;
+  --color-diff-removed-linenum-bg: #3a1717;
+  --color-diff-removed-row-bg: #240f0f;
+  --color-diff-removed-row-border: #553333;
+  --color-diff-removed-word-bg: #612a2a;
+  --color-diff-inactive: #0d0d0d;            /* collapsed/blank diff areas */
+
+  /* ------------------------------------------------------------------------
+     Message / status colors
+     Flash messages, form errors, PR merge box states, admin notices.
+     Backgrounds pushed darker; borders and text keep full strength so the
+     state is still obvious.
+     ------------------------------------------------------------------------ */
+  --color-error-border: #763232;
+  --color-error-bg: #1f0d10;
+  --color-error-bg-active: #3a1a1e;
+  --color-error-bg-hover: #2c1316;
+  --color-error-text: #f85149;
+  --color-success-border: #225633;
+  --color-success-bg: #0d2116;
+  --color-success-text: #3fb950;
+  --color-warning-border: #5f481a;
+  --color-warning-bg: #211b0c;
+  --color-warning-text: #d29922;
+  --color-info-border: #254a7e;
+  --color-info-bg: #0c1726;
+  --color-info-text: #2f81f7;
+  --color-priority-border: #4a268d;
+  --color-priority-bg: #170f26;
+  --color-priority-text: #a371f7;
+
+  /* ------------------------------------------------------------------------
+     Badge colors
+     Small pill badges (e.g. counters, PR/issue state in lists).
+     ------------------------------------------------------------------------ */
+  --color-red-badge: #db2828;
+  --color-red-badge-bg: #db28281a;
+  --color-red-badge-hover-bg: #db28284d;
+  --color-green-badge: #21ba45;
+  --color-green-badge-bg: #21ba451a;
+  --color-green-badge-hover-bg: #21ba454d;
+  --color-yellow-badge: #fbbd08;
+  --color-yellow-badge-bg: #fbbd081a;
+  --color-yellow-badge-hover-bg: #fbbd084d;
+  --color-orange-badge: #f2711c;
+  --color-orange-badge-bg: #f2711c1a;
+  --color-orange-badge-hover-bg: #f2711c4d;
+
+  /* brand colors */
+  --color-git: #f05133;
+  --color-logo: #609926;
+
+  /* ------------------------------------------------------------------------
+     Target-based colors: page surfaces
+     This is where "pitch black" happens. Page, boxes and code are #000;
+     headers are a hair off black so a box's title bar is still
+     distinguishable from its body.
+     ------------------------------------------------------------------------ */
+  --color-body: #000000;                     /* page background */
+  --color-box-header: #0a0a0a;               /* .ui.segment/box title bars */
+  --color-box-body: #000000;                 /* box/segment contents */
+  --color-box-body-highlight: #111111;       /* highlighted rows in boxes */
+
+  /* ------------------------------------------------------------------------
+     Text
+     Body text is a light grey (#d0d0d0, ~13:1 on black) rather than white,
+     which leaves pure white free for links (see "Links" below) so links
+     stand out from plain text without needing a hue.
+     Dimmest step (#8c8c8c) is still ~6.4:1 on black (WCAG AA for body text).
+     ------------------------------------------------------------------------ */
+  --color-text-dark: #ffffff;                /* headings, strongest text */
+  --color-text: #d0d0d0;                     /* normal body text */
+  --color-text-light: #c0c0c0;
+  --color-text-light-1: #adadad;
+  --color-text-light-2: #9c9c9c;             /* secondary/meta text */
+  --color-text-light-3: #8c8c8c;             /* timestamps, placeholders */
+  --color-footer: var(--color-nav-bg);
+  --color-timeline: #2e2e2e;                 /* vertical line on issue timeline */
+
+  /* ------------------------------------------------------------------------
+     Inputs
+     Text fields, selects, textareas. One step off black so a field is
+     visible even before you notice its border.
+     ------------------------------------------------------------------------ */
+  --color-input-text: var(--color-text-dark);
+  --color-input-background: #0a0a0a;
+  --color-input-toggle-background: #2e2e2e;  /* off-state of toggle switches */
+  --color-input-border: var(--color-secondary-dark-1);
+
+  /* ------------------------------------------------------------------------
+     Overlays, hover and active states
+     Translucent white on black: rows and menu items light up on hover
+     without introducing grey panels.
+     ------------------------------------------------------------------------ */
+  --color-light: #00000028;
+  --color-light-border: #ffffff28;
+  --color-hover: #ffffff14;
+  --color-hover-opaque: #141414;             /* opaque equivalent of --color-hover on black */
+  --color-active: #ffffff1f;
+
+  /* ------------------------------------------------------------------------
+     Menus, cards, buttons, code
+     Dropdowns, popups and cards float over the page, so they sit one step
+     off black and rely on their border + shadow to separate.
+     ------------------------------------------------------------------------ */
+  --color-menu: #0a0a0a;                     /* dropdowns, context menus, tippy popups */
+  --color-card: #0a0a0a;                     /* project cards, issue cards, user cards */
+  --color-markup-table-row: #ffffff0a;       /* zebra rows in rendered markdown tables */
+  --color-markup-code-block: #ffffff0f;      /* ```fenced``` blocks in markdown */
+  --color-markup-code-inline: #ffffff1f;     /* `inline code` in markdown */
+  --color-button: #0a0a0a;                   /* basic (non-colored) buttons */
+  --color-code-bg: #000000;                  /* file view / code view background */
+  --color-shadow: #00000080;
+  --color-shadow-opaque: #000000;
+  --color-secondary-bg: #141414;             /* modal actions, secondary segments, dropzone */
+  --color-expand-button: #242424;            /* "expand lines" buttons in diffs */
+  --color-placeholder-text: var(--color-text-light-3);
+  --color-editor-line-highlight: var(--color-secondary-alpha-40);
+  --color-editor-selection: var(--color-primary-alpha-50);
+  --color-project-column-bg: var(--color-secondary-light-3);  /* project board columns */
+  --color-caret: var(--color-text);
+
+  /* reactions (emoji reaction buttons on comments) */
+  --color-reaction-bg: #ffffff0f;
+  --color-reaction-hover-bg: var(--color-primary-light-4);
+  --color-reaction-active-bg: var(--color-primary-light-5);
+
+  /* tooltips - kept clearly lighter than black so they stand out */
+  --color-tooltip-text: #fafafa;
+  --color-tooltip-bg: #262626;
+
+  /* ------------------------------------------------------------------------
+     Navigation bars
+     Top navbar and secondary (repo/org tab) bars go fully black; the
+     bottom border of each bar comes from --color-secondary.
+     ------------------------------------------------------------------------ */
+  --color-nav-bg: #000000;
+  --color-nav-hover-bg: var(--color-secondary-light-1);
+  --color-nav-text: var(--color-text);
+  --color-secondary-nav-bg: #000000;
+
+  /* ------------------------------------------------------------------------
+     Issue/PR labels (uncolored "basic" labels)
+     ------------------------------------------------------------------------ */
+  --color-label-text: var(--color-text);
+  --color-label-bg: #8080804b;
+  --color-label-hover-bg: #808080a0;
+  --color-label-active-bg: #808080ff;
+
+  /* accent-color for native checkboxes/radios/range inputs */
+  --color-accent: var(--color-primary-light-1);
+  --color-small-accent: var(--color-primary-light-5);
+
+  /* search-match highlight (code search, file search) */
+  --color-highlight-fg: #87651e;
+  --color-highlight-bg: #3a3020;
+
+  /* dimmed backdrop behind modals */
+  --color-overlay-backdrop: #000000d0;
+  --color-danger: var(--color-red);
+
+  /* checkerboard behind transparent images in the image viewer/diff */
+  --color-transparency-grid-light: #1a1a1a;
+  --color-transparency-grid-dark: #0d0d0d;
+
+  /* Actions workflow graph: edge color on hover */
+  --color-workflow-edge-hover: #707070;
+
+  /* ------------------------------------------------------------------------
+     Syntax highlighting
+     Used by both Chroma (server-side code view) and the in-browser editor.
+     Stock Dark's palette already targets a near-black background and reads
+     well on pure black, so hues are unchanged; only the plain-text
+     colors are nudged brighter for contrast.
+     ------------------------------------------------------------------------ */
+  --color-syntax-keyword: #ff8854;
+  --color-syntax-bool: #25bbc9;
+  --color-syntax-control: #dd9e17;
+  --color-syntax-name: #fabd2f;
+  --color-syntax-type: #eb8cb3;
+  --color-syntax-number: #63b2dd;
+  --color-syntax-operator: #ff8854;
+  --color-syntax-regexp: #b89de4;
+  --color-syntax-string: #95b62a;
+  --color-syntax-comment: #8898b0;
+  --color-syntax-invalid: #ff8686;
+  --color-syntax-link: var(--color-primary);
+  --color-syntax-tag: #ff8854;
+  --color-syntax-attribute: #c792ff;
+  --color-syntax-property: #55afff;
+  --color-syntax-variable: #e29b33;
+  --color-syntax-string-special: #dd9e17;
+  --color-syntax-escape: #c7a618;
+  --color-syntax-entity: #c792ff;
+  --color-syntax-preproc: #4cbe7a;
+  --color-syntax-preproc-file: #63b2dd;
+  --color-syntax-decorator: #4cbe7a;
+  --color-syntax-namespace: #d4d9df;
+  --color-syntax-name-pseudo: #c792ff;
+  --color-syntax-comment-special: #b89de4;
+  --color-syntax-text: #d4d9df;
+  --color-syntax-text-alt: #c0c3cc;
+  --color-syntax-punctuation: #d8dae0;
+  --color-syntax-whitespace: #7f8699;
+  --color-syntax-diff-fg: #ffffff;
+  --color-syntax-deleted-bg: #4a2828;
+  --color-syntax-inserted-bg: #2a422a;
+  --color-syntax-emph: #d1a242;
+  --color-syntax-strong: #e29b33;
+  --color-syntax-heading: #dd9e17;
+  --color-syntax-subheading: #95b62a;
+  --color-syntax-output: #8898b0;
+  --color-syntax-prompt: #e29b33;
+  --color-syntax-traceback: #ff8686;
+  --color-syntax-matching-bracket-bg: #00918a48;
+  --color-syntax-nonmatching-bracket-bg: #cc484848;
+
+  /* ------------------------------------------------------------------------
+     Pitch Black specific variables (not part of Gitea; prefixed --pb-)
+     Used by the rule sections at the bottom of this file. Change them here
+     to retune links or the heatmap without touching the rules.
+     ------------------------------------------------------------------------ */
+  /* Links: white instead of the primary blue. Body text is #d0d0d0, so
+     white links are the brightest text on the page. */
+  --pb-link: #ffffff;
+  /* Faint underline drawn under links inside rendered markdown (READMEs,
+     issue/PR comments, wiki) so inline links are obvious in prose. */
+  --pb-link-underline: #5c5c5c;
+  /* Contribution heatmap, from "no activity" (0) to "most activity" (4).
+     Gitea only paints levels 0-4 on the calendar; level 5 appears only as
+     the last square of the "Less ... More" legend, so it matches level 4. */
+  --pb-heatmap-0: #1a1a1a;
+  --pb-heatmap-1: #474747;
+  --pb-heatmap-2: #7a7a7a;
+  --pb-heatmap-3: #b3b3b3;
+  --pb-heatmap-4: #ffffff;
+  --pb-heatmap-5: #ffffff;
+
+  /* ------------------------------------------------------------------------
+     Browser-level settings
+     accent-color: native form controls use the primary color.
+     color-scheme: dark scrollbars, form controls and default canvas.
+     scrollbar-color: (pitch black addition) grey thumb on a black track so
+     scrollbars don't show up as lighter grey strips. Inherited, so it
+     applies to every scrollable element.
+     ------------------------------------------------------------------------ */
+  accent-color: var(--color-accent);
+  color-scheme: dark;
+  scrollbar-color: var(--color-secondary-dark-2) var(--color-body);
+}
+
+
+/* --------------------------------------------------------------------------
+   Invert emojis that are black glyphs and disappear on a dark background
+   (check mark, arrows, currency, math symbols, etc.).
+   Gitea changed how emoji elements are tagged between versions, so both
+   selector sets are included:
+     * v28+   tags emoji with data-alias="<shortcode>"
+     * v1.27  tags emoji with aria-label="<name>"
+   -------------------------------------------------------------------------- */
+/* v28+ */
+.emoji[data-alias="heavy_check_mark"],
+.emoji[data-alias="currency_exchange"],
+.emoji[data-alias="top"],
+.emoji[data-alias="end"],
+.emoji[data-alias="on"],
+.emoji[data-alias="soon"],
+.emoji[data-alias="heavy_dollar_sign"],
+.emoji[data-alias="copyright"],
+.emoji[data-alias="registered"],
+.emoji[data-alias="tm"],
+.emoji[data-alias="heavy_multiplication_x"],
+.emoji[data-alias="heavy_plus_sign"],
+.emoji[data-alias="heavy_minus_sign"],
+.emoji[data-alias="heavy_division_sign"],
+.emoji[data-alias="curly_loop"],
+.emoji[data-alias="loop"],
+.emoji[data-alias="wavy_dash"],
+.emoji[data-alias="feet"],
+.emoji[data-alias="musical_note"],
+.emoji[data-alias="notes"],
+/* v1.27 */
+.emoji[aria-label="check mark"],
+.emoji[aria-label="currency exchange"],
+.emoji[aria-label="TOP arrow"],
+.emoji[aria-label="END arrow"],
+.emoji[aria-label="ON! arrow"],
+.emoji[aria-label="SOON arrow"],
+.emoji[aria-label="heavy dollar sign"],
+.emoji[aria-label="copyright"],
+.emoji[aria-label="registered"],
+.emoji[aria-label="trade mark"],
+.emoji[aria-label="multiply"],
+.emoji[aria-label="plus"],
+.emoji[aria-label="minus"],
+.emoji[aria-label="divide"],
+.emoji[aria-label="curly loop"],
+.emoji[aria-label="double curly loop"],
+.emoji[aria-label="wavy dash"],
+.emoji[aria-label="paw prints"],
+.emoji[aria-label="musical note"],
+.emoji[aria-label="musical notes"] {
+  filter: invert(100%) hue-rotate(180deg);
+}
+
+
+/* --------------------------------------------------------------------------
+   Links: greyscale instead of blue
+   Gitea colors every link with --color-primary (blue). Overriding the
+   primary color itself would also turn primary buttons, active tabs and
+   focus rings grey, so instead only the link rules are overridden here.
+   This file loads after Gitea's index.css, so these same-specificity
+   selectors win.
+     * a                - normal links: white (body text is #d0d0d0)
+     * a:hover          - Gitea already underlines on hover; keep it white
+     * a.muted / .muted-links a - inherit text color until hovered, then
+                          turn white like any other link
+   -------------------------------------------------------------------------- */
+a,
+a:hover,
+a.muted:hover,
+.muted-links a:hover {
+  color: var(--pb-link);
+}
+
+/* Other places Gitea swaps text to blue on hover (card footers, issue/PR
+   list titles, commit message links, avatar stacks, icon buttons in file
+   headers, the markdown toolbar, upload buttons, Actions log links).
+   All switched to white so hover feedback stays greyscale. */
+.ui.card > .extra a:not(.ui):hover,
+.comment-text-line a:hover,
+.title-full-link-hover:not(:has(:not(.title-full-link):hover)):hover > a.title-full-link,
+.avatar-stack-popup-trigger:hover,
+.non-diff-file-content .header .file-actions .btn-octicon:hover,
+.combo-markdown-editor .markdown-toolbar-button:hover,
+.dz-custom-buttons button:hover,
+.console a:hover {
+  color: var(--pb-link);
+}
+/* these two are !important in Gitea's CSS, so they need it here too */
+.items-with-main > .item a:not(.label, .button):hover,
+.interact-fg:hover {
+  color: var(--pb-link) !important;
+}
+
+/* Inline links in rendered markdown (README, issues, PRs, wiki, releases)
+   get a faint persistent underline. In running prose, brightness alone is
+   a weak cue, so this keeps links easy to spot without adding color.
+   Heading permalink anchors and label-style links are left alone. */
+.markup a:not(.anchor, .ui) {
+  text-decoration-line: underline;
+  text-decoration-color: var(--pb-link-underline);
+  text-underline-offset: 0.2em;
+}
+.markup a:not(.anchor, .ui):hover {
+  text-decoration-color: var(--pb-link);
+}
+
+/* Folder icons in the repo file list are blue in stock Gitea; make them
+   grey so the file list matches the greyscale links. */
+.svg.octicon-file-directory-fill,
+.svg.octicon-file-directory-open-fill,
+.svg.octicon-file-submodule {
+  color: var(--color-text-light-2);
+}
+
+
+/* --------------------------------------------------------------------------
+   Contribution heatmap (dashboard and user profile)
+   Gitea paints each day with an inline style such as
+   fill: var(--color-primary-light-4). Inline styles can't be overridden
+   by selector, but the variables they read can: redefining them only
+   inside #user-heatmap swaps the blue scale for dark grey -> white
+   without affecting the primary color anywhere else.
+   Mapping (Gitea level -> variable it reads):
+     0 no activity -> --color-secondary-alpha-60
+     1             -> --color-primary-light-4
+     2             -> --color-primary-light-2
+     3             -> --color-primary
+     4 most        -> --color-primary-dark-2
+     5 legend only -> --color-primary-dark-4
+   -------------------------------------------------------------------------- */
+#user-heatmap {
+  --color-secondary-alpha-60: var(--pb-heatmap-0);
+  --color-primary-light-4: var(--pb-heatmap-1);
+  --color-primary-light-2: var(--pb-heatmap-2);
+  --color-primary: var(--pb-heatmap-3);
+  --color-primary-dark-2: var(--pb-heatmap-4);
+  --color-primary-dark-4: var(--pb-heatmap-5);
+}
