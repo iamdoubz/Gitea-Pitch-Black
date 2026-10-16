@@ -2,6 +2,8 @@
 
 A pitch black theme for [Gitea](https://github.com/go-gitea/gitea): as black as possible without giving up readability or making any control hard to find.
 
+Comes in two variants: **Pitch Black** and **Pitch Black (High Contrast)**.
+
 Built from Gitea's stock **Dark** theme (`web_src/css/themes/theme-gitea-dark.css` at tag `v28.1.0`).
 
 | Gitea version | Status |
@@ -17,6 +19,8 @@ Built from Gitea's stock **Dark** theme (`web_src/css/themes/theme-gitea-dark.cs
 |---|---|
 | `theme-pitchblack.css` | Minified, no comments. This is the one to install. |
 | `theme-pitchblack-max.css` | Same theme, human readable, with comments explaining every section. Use it to tweak colors, then re-minify (or install it as-is). |
+| `theme-pitchblack-hc.css` | High contrast variant, minified. |
+| `theme-pitchblack-hc-max.css` | High contrast variant, human readable and commented. |
 | `theme-pitchblack.less` | Legacy theme for Gitea 1.14 – 1.18. |
 
 ## Install
@@ -34,7 +38,9 @@ Built from Gitea's stock **Dark** theme (`web_src/css/themes/theme-gitea-dark.cs
    If `THEMES` is not set, Gitea lists every theme it finds automatically.
 3. Restart Gitea and choose **Pitch Black** in *Settings → Appearance*.
 
-Install only one of the two `.css` files. Gitea names themes after the file name, so installing both gives you two entries (`pitchblack` and `pitchblack-max`) with the same display name.
+For the high contrast variant, use `theme-pitchblack-hc.css` and the name `pitchblack-hc`; it shows up as **Pitch Black (High Contrast)**. Both variants can be installed side by side.
+
+Install only one file per variant (the plain or the `-max` file). Gitea names themes after the file name, so installing both gives you two entries (`pitchblack` and `pitchblack-max`) with the same display name.
 
 ## Why the old version stopped working
 
@@ -51,9 +57,33 @@ Since v1.26, Gitea bundles its built-in themes with hashed file names, so a cust
 - Diff, status, label and syntax colors keep their stock hues, with backgrounds pushed darker, so meaning is never lost.
 - Neutral (not blue-tinted) greys throughout, plus dark scrollbars.
 
+## High contrast variant
+
+`theme-pitchblack-hc` follows the conventions shared by other platforms' dark high contrast themes: Windows 11 *Night sky* (plus *Aquatic* and *Dusk*), VS Code *Dark High Contrast*, and GitHub's *Dark high contrast*, measured against WCAG 2.2 AAA.
+
+| | Pitch Black | Pitch Black (High Contrast) |
+|---|---|---|
+| Surfaces | `#000` with near-black headers, inputs and menus | Everything `#000`; structure comes from borders only |
+| Borders | `#2e2e2e` | `#a0a0a0` (8:1 on black) |
+| Text | `#d0d0d0` body, dimmest `#8c8c8c` | `#ffffff` body, dimmest `#b3b3b3`; every text color is at least 7:1 |
+| Links | White | Cyan `#75e9fc` (Windows Aquatic), used only for links and always underlined in markdown |
+| Primary buttons, tabs | Blue | White with black text (Windows "Highlight" style) |
+| Keyboard focus | Gitea default | 2px orange `#f38518` ring (VS Code HC) on every focusable control |
+| Menus, tooltips, modals | Border and shadow | 2px white ring (Windows flyout guidance) |
+| Status, labels, diffs | Stock hues, darker fills | Bright text colors, solid fills that pass 7:1 with white text, vivid diff borders |
+| Syntax highlighting | Stock dark palette | Pastel palette (GitHub HC style), every token at least 7:1 |
+
+Colors for links, focus, popup rings and the heatmap are `--pb-*` variables in `theme-pitchblack-hc-max.css`. If Windows contrast themes are turned on, browsers replace page colors with the system palette anyway; this variant is for high contrast inside Gitea without changing the whole OS.
+
 ## Screenshots (Gitea v28.1.0)
 
 ![dashboard with heatmap](screenshots/pitchblack-dashboard.png)
 ![repository home](screenshots/pitchblack-repo.png)
 ![issue view](screenshots/pitchblack-issue.png)
 ![commit diff](screenshots/pitchblack-commit.png)
+
+### High contrast
+
+![high contrast dashboard](screenshots/pitchblack-hc-dashboard.png)
+![high contrast issue view](screenshots/pitchblack-hc-issue.png)
+![high contrast commit diff](screenshots/pitchblack-hc-commit.png)
